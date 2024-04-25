@@ -1,6 +1,23 @@
-## DAILY WEEKLY AND MONTHLY BACKUPS
+### DAILY WEEKLY AND MONTHLY BACKUPS
 
+###  Table of Contents
+=================
 
+* [Introduction:](#introduction)
+	* [Daily weekly and monthly backups using :](#daily-weekly-and-monthly-backups-using-)
+* [Servers info:](#servers-info)
+	* [Folder Structure:](#folder-structure)
+* [Generating ssh key](#generating-ssh-key)
+* [Backups](#backups)
+	* [Daily Backups](#daily-backups)
+	* [Weekly Backups](#weekly-backups)
+	* [Monthly Backups](#monthly-backups)
+* [Automate Using Cron Job](#automate-using-cron-job)
+* [Backup Server](#backup-server)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+
+ 
 
 ### Introduction:
 
@@ -14,20 +31,20 @@
 	cron        to automate the job
 
 
-### The servers info:
+### Servers info:
 
-	# Server to be backup [ez@mywebsite.com:~/var/www/html]
+	* Server to be backup [ez@mywebsite.com:~/var/www/html]
 		# Server mywebsite.com or 30.x.x.x
 		# user : ez
 		# folder to be backup : /var/www/html
 
-	# The Backup send to the server: [ez@myBackupserver.com:~/home/backups/mywebsite.com]
+	* The Backup send to the server: [ez@myBackupserver.com:~/home/backups/mywebsite.com]
 		# Server: myBackupserver.com  192.168.12.112
 		# user: ez	
 		# Dest folder: /home/backups/mywebsite.com
 
 
-### Creating the folders on the dest backup servers:
+#### Folder Structure:
 
 ```bash
 	mkdir /home/ez/backups
@@ -35,7 +52,8 @@
 	mkdir /home/ez/backups/mywebsite.com/{daily,weekly,monthly}
 ```
 
-### For the cron to work with out the password entry since it become automate
+### Generating ssh key
+For the cron to work with out the password entry since it become automate
 
 ```bash
 	# ssh-keygen -t rsa
@@ -43,7 +61,9 @@
 ```
 
 
-### DAILY BACKUPS
+### Backups
+
+#### Daily Backups
     # Create backup-daily.sh script as follows 
 	
 * backup-daily.sh
@@ -51,7 +71,7 @@
 	tar -zcf /home/ez/backups/mywebsite.com/daily/backup-$(date +%Y%m%d).tar.gz -C /var/www/html
 	find /home/ez/backups/mywebsite.com/dialy/* -mtime +7 -delete
 ```
-### WEEKLY BACKUPS
+#### Weekly Backups
     # Create backup-weeekly.sh script as follows 
 * backup-weekly.sh
 ```bash
@@ -59,7 +79,7 @@
 	find /home/ez/backups/mywebsite.com/weekly/* -mtime +31 -delete
 ```
 
-### MONTHLY BACKUPS
+#### Monthly Backups
     # Create backup-monthly.sh script as follows 
 * backup-monthly.sh
 ```bash
@@ -67,7 +87,7 @@
 	# fidn /home/ez/backups/mywebsite.com/monthly/* -mtime +365 -delete
 ```
 
-### AUTOMATE WITH CRON
+### Automate Using Cron Job
 	# crontab -e 
 ```bash
 15 0 * * * sh /home/ez/backups/mywebsite.com/backup-daily.sh  # daily @ 12:15am 
@@ -75,8 +95,8 @@
 45 0 1 * * sh /home/ez/backups/mywebsite.com/backup-monthly.sh # monthly on the 1st of the month
 ```
 
-### BACKUP EXTERNALLY
-	# backup is kept on other server incase of any disaster inorder to recover it from the other server
+### Backup Server 
+	# backup is kept on other server, 
 ```bash
 rsync -a --delete /home/ez/backups/mywebsite.com/ ez@192.168.12.112:/home/ez/backups/mywebsite
 ```
