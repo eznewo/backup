@@ -1,7 +1,6 @@
 ### DAILY WEEKLY AND MONTHLY BACKUPS
 
 ###  Table of Contents
-=================
 
 * [Introduction:](#introduction)
 	* [Daily weekly and monthly backups using :](#daily-weekly-and-monthly-backups-using-)
@@ -17,7 +16,6 @@
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 
- 
 
 ### Introduction:
 
